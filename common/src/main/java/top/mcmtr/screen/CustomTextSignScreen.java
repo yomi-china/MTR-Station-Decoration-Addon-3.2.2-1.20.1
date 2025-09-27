@@ -8,6 +8,7 @@ import mtr.mappings.Text;
 import mtr.packet.IPacket;
 import mtr.screen.WidgetBetterTextField;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.Level;
@@ -73,11 +74,11 @@ public class CustomTextSignScreen extends ScreenMapper implements IGui, IPacket 
     }
 
     @Override
-    public void render(PoseStack matrices, int mouseX, int mouseY, float delta) {
+    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
         try {
-            renderBackground(matrices);
-            font.draw(matrices, messageText, SQUARE_SIZE + TEXT_PADDING, SQUARE_SIZE, ARGB_WHITE);
-            super.render(matrices, mouseX, mouseY, delta);
+            renderBackground(guiGraphics);
+            guiGraphics.drawString(font, messageText, SQUARE_SIZE + TEXT_PADDING, SQUARE_SIZE, ARGB_WHITE, false);
+            super.render(guiGraphics, mouseX, mouseY, delta);
         } catch (Exception e) {
             e.printStackTrace();
         }

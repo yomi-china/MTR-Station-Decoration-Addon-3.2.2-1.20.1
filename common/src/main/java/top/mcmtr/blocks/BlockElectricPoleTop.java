@@ -31,7 +31,7 @@ public class BlockElectricPoleTop extends HorizontalDirectionalBlock {
     public static final BooleanProperty IS_LONG = BooleanProperty.create("is_long");
 
     public BlockElectricPoleTop(Properties properties) {
-        super(properties);
+        super(Properties.of().pushReaction(PushReaction.BLOCK));
         registerDefaultState(defaultBlockState().setValue(FACING, Direction.NORTH).setValue(IS_LONG, false));
     }
 
@@ -80,8 +80,4 @@ public class BlockElectricPoleTop extends HorizontalDirectionalBlock {
         }
     }
 
-    @Override
-    public PushReaction getPistonPushReaction(BlockState blockState) {
-        return PushReaction.BLOCK;
-    }
 }

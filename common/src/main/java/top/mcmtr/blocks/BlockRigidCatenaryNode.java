@@ -28,7 +28,7 @@ public class BlockRigidCatenaryNode extends BlockDirectionalMapper {
     public static final BooleanProperty IS_CONNECTED = BooleanProperty.create("is_connected");
 
     public BlockRigidCatenaryNode(Properties properties) {
-        super(properties);
+        super(Properties.of().pushReaction(PushReaction.BLOCK));
         this.registerDefaultState(defaultBlockState().setValue(FACING, false).setValue(IS_22_5, false).setValue(IS_45, false));
     }
 
@@ -74,10 +74,6 @@ public class BlockRigidCatenaryNode extends BlockDirectionalMapper {
         return Shapes.empty();
     }
 
-    @Override
-    public PushReaction getPistonPushReaction(BlockState blockState) {
-        return PushReaction.BLOCK;
-    }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {

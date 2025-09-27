@@ -120,7 +120,7 @@ public class RenderCustomTextSign<T extends BlockEntityMapper> extends BlockEnti
                 if (destinationWidth > trueFRowTotalScaledWidth) {
                     matrices.scale(trueFRowTotalScaledWidth / destinationWidth, 1, 1);
                 }
-                textRenderer.draw(matrices, destinationString, 0, 0, trueColor);
+                textRenderer.drawInBatch(destinationString, 0, 0, trueColor, false, matrices.last().pose(), vertexConsumers, Font.DisplayMode.NORMAL, 0, light);
                 matrices.popPose();
                 matrices.pushPose();
                 matrices.translate(0.5, 0, 0.5);
@@ -135,7 +135,7 @@ public class RenderCustomTextSign<T extends BlockEntityMapper> extends BlockEnti
                 } else {
                     leftLength = trueFRowTotalScaledWidth - destinationWidth;
                 }
-                textRenderer.draw(matrices, destinationString, leftLength, 0, trueColor);
+                textRenderer.drawInBatch(destinationString, leftLength, 0, trueColor, false, matrices.last().pose(), vertexConsumers, Font.DisplayMode.NORMAL, 0, light);
                 matrices.popPose();
                 matrices.pushPose();
                 matrices.translate(0.5, 0, 0.5);
@@ -146,7 +146,7 @@ public class RenderCustomTextSign<T extends BlockEntityMapper> extends BlockEnti
                 if (destinationWidth2 > sRowTotalScaledWidth) {
                     matrices.scale(sRowTotalScaledWidth / destinationWidth2, 1, 1);
                 }
-                textRenderer.draw(matrices, destinationString2, 0, 0, trueColor);
+                textRenderer.drawInBatch(destinationString2, 0, 0, trueColor, false, matrices.last().pose(), vertexConsumers, Font.DisplayMode.NORMAL, 0, light);
                 matrices.popPose();
                 matrices.pushPose();
                 matrices.translate(0.5, 0, 0.5);
@@ -161,7 +161,7 @@ public class RenderCustomTextSign<T extends BlockEntityMapper> extends BlockEnti
                 } else {
                     leftLength2 = sRowTotalScaledWidth - destinationWidth2;
                 }
-                textRenderer.draw(matrices, destinationString2, leftLength2, 0, trueColor);
+                textRenderer.drawInBatch(destinationString2, leftLength2, 0, trueColor, false, matrices.last().pose(), vertexConsumers, Font.DisplayMode.NORMAL, 0, light);
                 matrices.popPose();
             }
         } catch (Exception e) {

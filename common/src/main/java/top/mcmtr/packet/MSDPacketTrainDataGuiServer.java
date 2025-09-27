@@ -47,12 +47,12 @@ public class MSDPacketTrainDataGuiServer extends PacketTrainDataBase {
             signIds[i] = signId.isEmpty() ? null : signId;
         }
         minecraftServer.execute(() -> {
-            final BlockEntity entity = player.level.getBlockEntity(signPos);
+            final BlockEntity entity = player.level().getBlockEntity(signPos);
             if (entity instanceof BlockYamanoteRailwaySign.TileEntityRailwaySign) {
                 setTileEntityDataAndWriteUpdate(player, entity2 -> entity2.setData(selectedIds, signIds), (BlockYamanoteRailwaySign.TileEntityRailwaySign) entity);
             } else if (entity instanceof BlockRouteSignBase.TileEntityRouteSignBase) {
                 final long platformId = selectedIds.isEmpty() ? 0 : (long) selectedIds.toArray()[0];
-                final BlockEntity entityAbove = player.level.getBlockEntity(signPos.above());
+                final BlockEntity entityAbove = player.level().getBlockEntity(signPos.above());
                 if (entityAbove instanceof BlockRouteSignBase.TileEntityRouteSignBase) {
                     setTileEntityDataAndWriteUpdate(player, entity2 -> entity2.setPlatformId(platformId), ((BlockRouteSignBase.TileEntityRouteSignBase) entityAbove), (BlockRouteSignBase.TileEntityRouteSignBase) entity);
                 } else {
@@ -64,7 +64,7 @@ public class MSDPacketTrainDataGuiServer extends PacketTrainDataBase {
 
     @SafeVarargs
     private static <T extends BlockEntityMapper> void setTileEntityDataAndWriteUpdate(ServerPlayer player, Consumer<T> setData, T... entities) {
-        final CatenaryData catenaryData = CatenaryData.getInstance(player.level);
+        final CatenaryData catenaryData = CatenaryData.getInstance(player.level());
         if (catenaryData != null && entities.length > 0) {
             final CompoundTag compoundTagOld = new CompoundTag();
             entities[0].writeCompoundTag(compoundTagOld);
@@ -143,7 +143,7 @@ public class MSDPacketTrainDataGuiServer extends PacketTrainDataBase {
         }
         minecraftServer.execute(() -> {
             final List<BlockCustomTextSignBase.TileEntityBlockCustomTextSignBase> entities = new ArrayList<>();
-            final BlockEntity entity1 = player.level.getBlockEntity(pos);
+            final BlockEntity entity1 = player.level().getBlockEntity(pos);
             if (entity1 instanceof BlockCustomTextSignBase.TileEntityBlockCustomTextSignBase) {
                 entities.add((BlockCustomTextSignBase.TileEntityBlockCustomTextSignBase) entity1);
             }
@@ -168,7 +168,7 @@ public class MSDPacketTrainDataGuiServer extends PacketTrainDataBase {
         final BlockLocation location = new BlockLocation(locationX, locationY, locationZ);
         minecraftServer.execute(() -> {
             final List<BlockNodeBase.BlockNodeBaseEntity> entities = new ArrayList<>();
-            final BlockEntity entity1 = player.level.getBlockEntity(pos);
+            final BlockEntity entity1 = player.level().getBlockEntity(pos);
             if (entity1 instanceof BlockNodeBase.BlockNodeBaseEntity) {
                 entities.add((BlockNodeBase.BlockNodeBaseEntity) entity1);
             }

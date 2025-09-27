@@ -35,7 +35,7 @@ public abstract class BlockNodeBase extends Block implements EntityBlockMapper {
     public static final BooleanProperty IS_CONNECTED = BooleanProperty.create("is_connected");
 
     public BlockNodeBase(Properties properties) {
-        super(properties);
+        super(Properties.of().pushReaction(PushReaction.BLOCK));
         this.registerDefaultState((this.stateDefinition.any()).setValue(FACING, Direction.UP).setValue(IS_CONNECTED, false));
     }
 
@@ -72,11 +72,6 @@ public abstract class BlockNodeBase extends Block implements EntityBlockMapper {
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         builder.add(FACING, IS_CONNECTED);
-    }
-
-    @Override
-    public PushReaction getPistonPushReaction(BlockState blockState) {
-        return PushReaction.BLOCK;
     }
 
     public static void resetNode(Level world, BlockPos pos) {
