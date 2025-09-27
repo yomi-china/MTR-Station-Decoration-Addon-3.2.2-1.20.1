@@ -13,6 +13,7 @@ import mtr.mappings.UtilitiesClient;
 import mtr.screen.DashboardListSelectorScreen;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.ImageButton;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -156,19 +157,20 @@ public class YamanoteRailwaySignScreen extends ScreenMapper implements IGui {
     }
 
     @Override
-    public void render(PoseStack matrices, int mouseX, int mouseY, float delta) {
+    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
         try {
-            renderBackground(matrices);
-            super.render(matrices, mouseX, mouseY, delta);
+            renderBackground(guiGraphics);
+            super.render(guiGraphics, mouseX, mouseY, delta);
             if (minecraft == null) {
                 return;
             }
             for (int i = 0; i < signIds.length; i++) {
                 if (signIds[i] != null) {
-                    RenderYamanoteRailwaySign.drawSign(matrices, null, null, font, signPos, signIds[i], (width - SIGN_SIZE * length) / 2F + i * SIGN_SIZE, 0, SIGN_SIZE, RenderYamanoteRailwaySign.getMaxWidth(signIds, i, false), RenderYamanoteRailwaySign.getMaxWidth(signIds, i, true), selectedIds, Direction.UP, 0, (textureId, x, y, size, flipTexture) -> {
-                        UtilitiesClient.beginDrawingTexture(textureId);
-                        blit(matrices, (int) x, (int) y, 0, 0, (int) size, (int) size, (int) (flipTexture ? -size : size), (int) size);
-                    });
+                    RenderYamanoteRailwaySign.drawSignForScreen(guiGraphics, font, signIds[i],
+                            (width - SIGN_SIZE * length) / 2F + i * SIGN_SIZE, 0, SIGN_SIZE,
+                            RenderYamanoteRailwaySign.getMaxWidth(signIds, i, false),
+                            RenderYamanoteRailwaySign.getMaxWidth(signIds, i, true),
+                            selectedIds, 0);
                 }
             }
             if (editingIndex >= 0) {
@@ -179,11 +181,12 @@ public class YamanoteRailwaySignScreen extends ScreenMapper implements IGui {
                     final CustomResources.CustomSign sign = RenderYamanoteRailwaySign.getSign(signId);
                     if (sign != null) {
                         final boolean moveRight = sign.hasCustomText() && sign.flipCustomText;
-                        UtilitiesClient.beginDrawingTexture(sign.textureId);
-                        RenderYamanoteRailwaySign.drawSign(matrices, null, null, font, signPos, signId, (isBig ? xOffsetBig : xOffsetSmall) + x + (moveRight ? SIGN_BUTTON_SIZE * 2 : 0), BUTTON_Y_START + y, SIGN_BUTTON_SIZE, 2, 2, selectedIds, Direction.UP, 0, (textureId, x1, y1, size, flipTexture) -> blit(matrices, (int) x1, (int) y1, 0, 0, (int) size, (int) size, (int) (flipTexture ? -size : size), (int) size));
+                        RenderYamanoteRailwaySign.drawSignForScreen(guiGraphics, font, signId,
+                                (isBig ? xOffsetBig : xOffsetSmall) + x + (moveRight ? SIGN_BUTTON_SIZE * 2 : 0),
+                                BUTTON_Y_START + y, SIGN_BUTTON_SIZE, 2, 2, selectedIds, 0);
                     }
                 }, false);
-                Gui.drawCenteredString(matrices, font, String.format("%s/%s", page + 1, totalPages), (width - PANEL_WIDTH - SQUARE_SIZE * 4) / 2 + PANEL_WIDTH + SQUARE_SIZE * 2, height - SQUARE_SIZE * 2 + TEXT_PADDING, ARGB_WHITE);
+                guiGraphics.drawCenteredString(font, String.format("%s/%s", page + 1, totalPages), (width - PANEL_WIDTH - SQUARE_SIZE * 4) / 2 + PANEL_WIDTH + SQUARE_SIZE * 2, height - SQUARE_SIZE * 2 + TEXT_PADDING, ARGB_WHITE);
             }
         } catch (Exception e) {
             e.printStackTrace();

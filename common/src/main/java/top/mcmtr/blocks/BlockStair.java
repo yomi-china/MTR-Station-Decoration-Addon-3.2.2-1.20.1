@@ -4,14 +4,14 @@ import mtr.block.IBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class BlockStair extends BlockChangeModelBase {
     public BlockStair() {
-        super(1, Properties.of(Material.METAL).requiresCorrectToolForDrops().strength(2.0F));
+        super(1, Properties.of().mapColor(MapColor.METAL).requiresCorrectToolForDrops().strength(2.0F));
     }
 
     @Override

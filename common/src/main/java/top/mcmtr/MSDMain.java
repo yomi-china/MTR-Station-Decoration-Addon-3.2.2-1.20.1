@@ -159,13 +159,13 @@ public class MSDMain {
             }
         }));
         Registry.registerPlayerJoinEvent(player -> {
-            final CatenaryData catenaryData = CatenaryData.getInstance(player.getLevel());
-            final RigidCatenaryData rigidCatenaryData = RigidCatenaryData.getInstance(player.getLevel());
+            final CatenaryData catenaryData = CatenaryData.getInstance(player.serverLevel());
+            final RigidCatenaryData rigidCatenaryData = RigidCatenaryData.getInstance(player.serverLevel());
         });
         Registry.registerPlayerQuitEvent(player -> {
-            final CatenaryData catenaryData = CatenaryData.getInstance(player.getLevel());
-            final RigidCatenaryData rigidCatenaryData = RigidCatenaryData.getInstance(player.getLevel());
-            final TransCatenaryData transCatenaryData = TransCatenaryData.getInstance(player.getLevel());
+            final CatenaryData catenaryData = CatenaryData.getInstance(player.serverLevel());
+            final RigidCatenaryData rigidCatenaryData = RigidCatenaryData.getInstance(player.serverLevel());
+            final TransCatenaryData transCatenaryData = TransCatenaryData.getInstance(player.serverLevel());
             if (catenaryData != null) {
                 catenaryData.disconnectPlayer(player);
             }

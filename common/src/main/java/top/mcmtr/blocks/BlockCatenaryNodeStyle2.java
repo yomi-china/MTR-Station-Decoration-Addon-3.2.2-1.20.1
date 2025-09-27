@@ -4,7 +4,6 @@ import mtr.mappings.BlockEntityMapper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import top.mcmtr.MSDBlockEntityTypes;
 import top.mcmtr.data.CatenaryData;

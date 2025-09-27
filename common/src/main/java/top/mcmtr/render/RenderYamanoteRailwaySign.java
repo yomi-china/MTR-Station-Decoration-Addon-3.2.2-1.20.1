@@ -21,6 +21,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
 import net.minecraft.core.BlockPos;
@@ -112,6 +113,61 @@ public class RenderYamanoteRailwaySign<T extends BlockYamanoteRailwaySign.TileEn
             }
         }
         matrices.popPose();
+    }
+
+    public static void drawSignForScreen(GuiGraphics guiGraphics, Font textRenderer, String signId, float x, float y, float size, float maxWidthLeft, float maxWidthRight, Set<Long> selectedIds, int backgroundColor) {
+        final CustomResources.CustomSign sign = getSign(signId);
+        if (sign == null) {
+            return;
+        }
+
+        final float signSize = (sign.small ? BlockYamanoteRailwaySign.SMALL_SIGN_PERCENTAGE : 1) * size;
+        final float margin = (size - signSize) / 2;
+        final boolean hasCustomText = sign.hasCustomText();
+        final boolean flipCustomText = sign.flipCustomText;
+        final boolean flipTexture = sign.flipTexture;
+
+        float textureX = x + margin;
+        float textureY = y + margin;
+
+        if (flipTexture) {
+            guiGraphics.blit(sign.textureId, (int)(textureX + signSize), (int)textureY, (int)-signSize, (int)signSize, 0, 0, (int)signSize, (int)signSize, (int)signSize, (int)signSize);
+        } else {
+            guiGraphics.blit(sign.textureId, (int)textureX, (int)textureY, (int)signSize, (int)signSize, 0, 0, (int)signSize, (int)signSize, (int)signSize, (int)signSize);
+        }
+
+        if (hasCustomText) {
+            final boolean isExit = signId.equals(BlockRailwaySign.SignType.EXIT_LETTER.toString()) || signId.equals(BlockRailwaySign.SignType.EXIT_LETTER_FLIPPED.toString());
+            final boolean isLine = signId.equals(BlockRailwaySign.SignType.LINE.toString()) || signId.equals(BlockRailwaySign.SignType.LINE_FLIPPED.toString());
+            final boolean isPlatform = signId.equals(BlockRailwaySign.SignType.PLATFORM.toString()) || signId.equals(BlockRailwaySign.SignType.PLATFORM_FLIPPED.toString());
+            final boolean isStation = signId.equals(BlockRailwaySign.SignType.STATION.toString()) || signId.equals(BlockRailwaySign.SignType.STATION_FLIPPED.toString());
+
+            String displayText = sign.customText;
+
+            if (isStation) {
+                displayText = IGui.mergeStations(selectedIds.stream()
+                        .filter(ClientData.DATA_CACHE.stationIdMap::containsKey)
+                        .sorted(Long::compareTo)
+                        .map(stationId -> IGui.insertTranslation("gui.mtr.station_cjk", "gui.mtr.station", 1, ClientData.DATA_CACHE.stationIdMap.get(stationId).name))
+                        .collect(Collectors.toList()));
+            }
+
+            if (displayText != null && !displayText.isEmpty()) {
+                final float fixedMargin = size * (1 - BlockYamanoteRailwaySign.SMALL_SIGN_PERCENTAGE) / 2;
+                final boolean isSmall = sign.small;
+                final float maxWidth = Math.max(0, (flipCustomText ? maxWidthLeft : maxWidthRight) * size - fixedMargin * (isSmall ? 1 : 2));
+                final float textX = flipCustomText ? x - (isSmall ? 0 : fixedMargin) : x + size + (isSmall ? 0 : fixedMargin);
+                final float textY = y + fixedMargin;
+
+                if (flipCustomText) {
+                    int textWidth = textRenderer.width(displayText);
+                    float actualX = textX - Math.min(textWidth, maxWidth);
+                    guiGraphics.drawString(textRenderer, displayText, (int)actualX, (int)textY, ARGB_WHITE, false);
+                } else {
+                    guiGraphics.drawString(textRenderer, displayText, (int)textX, (int)textY, ARGB_WHITE, false);
+                }
+            }
+        }
     }
 
     public static void drawSign(PoseStack matrices, MultiBufferSource vertexConsumers, StoredMatrixTransformations storedMatrixTransformations, Font textRenderer, BlockPos pos, String signId, float x, float y, float size, float maxWidthLeft, float maxWidthRight, Set<Long> selectedIds, Direction facing, int backgroundColor, DrawTexture drawTexture) {

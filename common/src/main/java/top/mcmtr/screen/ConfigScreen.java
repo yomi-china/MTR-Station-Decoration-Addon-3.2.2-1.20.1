@@ -7,6 +7,7 @@ import mtr.mappings.Text;
 import mtr.mappings.UtilitiesClient;
 import mtr.screen.WidgetBetterTextField;
 import mtr.screen.WidgetShorterSlider;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.util.Mth;
 import top.mcmtr.config.Config;
@@ -51,16 +52,16 @@ public class ConfigScreen extends ScreenMapper implements IGui {
     }
 
     @Override
-    public void render(PoseStack matrices, int mouseX, int mouseY, float delta) {
+    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
         try {
-            renderBackground(matrices);
-            drawCenteredString(matrices, font, Text.translatable("gui.msd.options"), width / 2, TEXT_PADDING, ARGB_WHITE);
+            renderBackground(guiGraphics);
+            guiGraphics.drawCenteredString(font, Text.translatable("gui.msd.options"), width / 2, TEXT_PADDING, ARGB_WHITE);
             int i = 1;
-            drawString(matrices, font, Text.translatable("options.msd.rigid_catenary_segment_length"), SQUARE_SIZE, (SQUARE_SIZE + TEXT_FIELD_PADDING) * (i++) + SQUARE_SIZE + TEXT_PADDING, ARGB_WHITE);
-            drawString(matrices, font, Text.translatable("options.msd.pids_view_distance"), SQUARE_SIZE, (SQUARE_SIZE + TEXT_FIELD_PADDING) * (i++) + SQUARE_SIZE + TEXT_PADDING, ARGB_WHITE);
-            drawString(matrices, font, Text.translatable("options.msd.railway_sign_view_distance"), SQUARE_SIZE, (SQUARE_SIZE + TEXT_FIELD_PADDING) * (i++) + SQUARE_SIZE + TEXT_PADDING, ARGB_WHITE);
-            drawString(matrices, font, Text.translatable("options.msd.custom_text_view_distance"), SQUARE_SIZE, (SQUARE_SIZE + TEXT_FIELD_PADDING) * i + SQUARE_SIZE + TEXT_PADDING, ARGB_WHITE);
-            super.render(matrices, mouseX, mouseY, delta);
+            guiGraphics.drawString(font, Text.translatable("options.msd.rigid_catenary_segment_length"), SQUARE_SIZE, (SQUARE_SIZE + TEXT_FIELD_PADDING) * (i++) + SQUARE_SIZE + TEXT_PADDING, ARGB_WHITE);
+            guiGraphics.drawString(font, Text.translatable("options.msd.pids_view_distance"), SQUARE_SIZE, (SQUARE_SIZE + TEXT_FIELD_PADDING) * (i++) + SQUARE_SIZE + TEXT_PADDING, ARGB_WHITE);
+            guiGraphics.drawString(font, Text.translatable("options.msd.railway_sign_view_distance"), SQUARE_SIZE, (SQUARE_SIZE + TEXT_FIELD_PADDING) * (i++) + SQUARE_SIZE + TEXT_PADDING, ARGB_WHITE);
+            guiGraphics.drawString(font, Text.translatable("options.msd.custom_text_view_distance"), SQUARE_SIZE, (SQUARE_SIZE + TEXT_FIELD_PADDING) * i + SQUARE_SIZE + TEXT_PADDING, ARGB_WHITE);
+            super.render(guiGraphics, mouseX, mouseY, delta);
         } catch (Exception e) {
             e.printStackTrace();
         }

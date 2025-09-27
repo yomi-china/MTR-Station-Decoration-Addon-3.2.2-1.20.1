@@ -26,8 +26,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.material.Material;
-import net.minecraft.world.level.material.MaterialColor;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -46,7 +45,7 @@ public class BlockYamanoteRailwaySign extends BlockDirectionalMapper implements 
     public static final float SMALL_SIGN_PERCENTAGE = 0.75F;
 
     public BlockYamanoteRailwaySign(int length, boolean isOdd) {
-        super(Properties.of(Material.METAL, MaterialColor.COLOR_GRAY).requiresCorrectToolForDrops().strength(2).lightLevel(state -> 15));
+        super(Properties.of().mapColor(MapColor.METAL).requiresCorrectToolForDrops().strength(2).lightLevel(state -> 15));
         this.length = length;
         this.isOdd = isOdd;
     }

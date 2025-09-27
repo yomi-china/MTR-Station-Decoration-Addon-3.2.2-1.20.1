@@ -8,6 +8,7 @@ import mtr.mappings.UtilitiesClient;
 import mtr.packet.IPacket;
 import mtr.screen.WidgetBetterTextField;
 import mtr.screen.WidgetShorterSlider;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
@@ -51,15 +52,15 @@ public class BlockNodeScreen extends ScreenMapper implements IGui, IPacket {
     }
 
     @Override
-    public void render(PoseStack matrices, int mouseX, int mouseY, float delta) {
+    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
         try {
-            renderBackground(matrices);
-            drawCenteredString(matrices, font, Text.translatable("gui.msd.point_position_options"), width / 2, TEXT_PADDING, ARGB_WHITE);
+            renderBackground(guiGraphics);
+            guiGraphics.drawCenteredString(font, Text.translatable("gui.msd.point_position_options"), width / 2, TEXT_PADDING, ARGB_WHITE);
             int i = 1;
-            drawString(matrices, font, Text.translatable("options.msd.point_position_x"), SQUARE_SIZE, (SQUARE_SIZE + TEXT_FIELD_PADDING) * (i++) + SQUARE_SIZE + TEXT_PADDING, ARGB_WHITE);
-            drawString(matrices, font, Text.translatable("options.msd.point_position_y"), SQUARE_SIZE, (SQUARE_SIZE + TEXT_FIELD_PADDING) * (i++) + SQUARE_SIZE + TEXT_PADDING, ARGB_WHITE);
-            drawString(matrices, font, Text.translatable("options.msd.point_position_z"), SQUARE_SIZE, (SQUARE_SIZE + TEXT_FIELD_PADDING) * (i++) + SQUARE_SIZE + TEXT_PADDING, ARGB_WHITE);
-            super.render(matrices, mouseX, mouseY, delta);
+            guiGraphics.drawString(font, Text.translatable("options.msd.point_position_x"), SQUARE_SIZE, (SQUARE_SIZE + TEXT_FIELD_PADDING) * (i++) + SQUARE_SIZE + TEXT_PADDING, ARGB_WHITE, false);
+            guiGraphics.drawString(font, Text.translatable("options.msd.point_position_y"), SQUARE_SIZE, (SQUARE_SIZE + TEXT_FIELD_PADDING) * (i++) + SQUARE_SIZE + TEXT_PADDING, ARGB_WHITE, false);
+            guiGraphics.drawString(font, Text.translatable("options.msd.point_position_z"), SQUARE_SIZE, (SQUARE_SIZE + TEXT_FIELD_PADDING) * (i++) + SQUARE_SIZE + TEXT_PADDING, ARGB_WHITE, false);
+            super.render(guiGraphics, mouseX, mouseY, delta);
         } catch (Exception e) {
             e.printStackTrace();
         }

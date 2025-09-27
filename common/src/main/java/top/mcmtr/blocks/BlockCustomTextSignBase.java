@@ -15,7 +15,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
@@ -24,7 +24,12 @@ import top.mcmtr.packet.MSDPacketTrainDataGuiServer;
 
 public abstract class BlockCustomTextSignBase extends BlockChangeModelBase implements EntityBlockMapper {
     public BlockCustomTextSignBase(int count) {
-        super(count, Properties.of(Material.METAL).requiresCorrectToolForDrops().strength(2.0F).lightLevel((state) -> 5));
+        super(count, Properties.of()
+                .mapColor(MapColor.METAL)
+                .requiresCorrectToolForDrops()
+                .strength(2.0F)
+                .lightLevel((state) -> 5)
+                .pushReaction(PushReaction.BLOCK));
     }
 
     @Override
@@ -37,12 +42,6 @@ public abstract class BlockCustomTextSignBase extends BlockChangeModelBase imple
             }
         });
     }
-
-    @Override
-    public PushReaction getPistonPushReaction(BlockState blockState) {
-        return PushReaction.BLOCK;
-    }
-
 
     public abstract static class TileEntityBlockCustomTextSignBase extends BlockEntityClientSerializableMapper {
         private final String[] messages = new String[getMaxArrivals()];
