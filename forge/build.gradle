@@ -6,9 +6,10 @@ architectury {
 loom {
     accessWidenerPath = project(":common").loom.accessWidenerPath
     forge {
-        convertAccessWideners = false;
+        convertAccessWideners = true
         extraAccessWideners.add loom.accessWidenerPath.get().asFile.name
         mixinConfig "msd-common.mixins.json"
+        mixinConfig "msd.mixins.json"
     }
 }
 

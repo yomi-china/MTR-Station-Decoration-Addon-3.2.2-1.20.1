@@ -1,12 +1,25 @@
 import groovy.json.JsonSlurper
 import org.apache.tools.ant.filters.ReplaceTokens
 
+buildscript {
+    repositories {
+        maven { url = "https://maven.fabricmc.net/" }
+        maven { url = "https://maven.architectury.dev/" }
+        maven { url = "https://maven.minecraftforge.net/" }
+        mavenCentral()
+        gradlePluginPortal()
+    }
+    dependencies {
+        classpath "gradle.plugin.com.github.johnrengelman:shadow:7.1.2"
+    }
+}
+
 plugins {
     id "java"
-    id "architectury-plugin" version "+"
-    id "de.undercouch.download" version "+"
-    id "dev.architectury.loom" version "+" apply false
-    id "com.github.johnrengelman.shadow" version "+" apply false
+    id "architectury-plugin" version "3.4-SNAPSHOT"
+    id "de.undercouch.download" version "5.4.0"
+    id "dev.architectury.loom" version "1.6-SNAPSHOT" apply false
+    id "com.github.johnrengelman.shadow" version "7.1.2" apply false
 }
 
 def default_minecraft_version = "1.20.1"
@@ -44,13 +57,12 @@ subprojects {
     dependencies {
         minecraft "com.mojang:minecraft:${minecraft_version}"
         mappings loom.officialMojangMappings()
-        implementation "org.msgpack:msgpack-core:+"
-        implementation "com.github.jonafanho:Minecraft-Mod-API-Tools:${rootProject.minecraft_mod_api_tools_version}"
+        compileOnly "org.msgpack:msgpack-core:${rootProject.messagepack_version}"
         implementation "org.codehaus.groovy:groovy-json:3.0.9"
         implementation files("../checkouts/mtr-common.jar")
-        shadowCommon "org.msgpack:msgpack-core:+"
     }
 }
+
 tasks.register('setupLibrary') {
     doLast {
         def commonJar = file("checkouts/mtr-common.jar")
@@ -149,8 +161,13 @@ allprojects {
     repositories {
         maven { url = "https://jitpack.io/" }
         maven { url = "https://maven.terraformersmc.com/" }
+        maven { url = "https://maven.minecraftforge.net/" }
+        maven { url = "https://maven.fabricmc.net/" }
         flatDir {
             dirs "../libs"
+        }
+        flatDir {
+            dirs "../checkouts"
         }
     }
 

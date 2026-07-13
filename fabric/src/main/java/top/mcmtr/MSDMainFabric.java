@@ -7,11 +7,13 @@ import mtr.mappings.BlockEntityMapper;
 import mtr.mappings.RegistryUtilities;
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -23,13 +25,22 @@ public class MSDMainFabric implements ModInitializer {
         MSDMain.init(MSDMainFabric::registerItem, MSDMainFabric::registerBlock, MSDMainFabric::registerBlock, MSDMainFabric::registerBlockEntityType, MSDMainFabric::registerEntityType, MSDMainFabric::registerSoundEvent);
     }
 
+    private static void RegisterCreativeModeTab(CreativeModeTab tab, Item item) {
+        if (tab == null) return;
+        if (BuiltInRegistries.CREATIVE_MODE_TAB.getResourceKey(tab).isPresent()) {
+            FabricRegistryUtilities.registerCreativeModeTab(tab, item);
+        } else {
+            System.out.println("[MSD] Skipped creative tab registration for item " + item + ": CreativeModeTab not yet registered in BuiltInRegistries.");
+        }
+    }
+
     private static void registerItem(String path, RegistryObject<Item> item) {
         final Item itemObject = item.get();
         Registry.register(RegistryUtilities.registryGetItem(), new ResourceLocation(MSDMain.MOD_ID, path), itemObject);
         if (itemObject instanceof ItemWithCreativeTabBase) {
-            FabricRegistryUtilities.registerCreativeModeTab(((ItemWithCreativeTabBase) itemObject).creativeModeTab.get(), itemObject);
+            RegisterCreativeModeTab(((ItemWithCreativeTabBase) itemObject).creativeModeTab.get(), itemObject);
         } else if (itemObject instanceof ItemWithCreativeTabBase.ItemPlaceOnWater) {
-            FabricRegistryUtilities.registerCreativeModeTab(((ItemWithCreativeTabBase.ItemPlaceOnWater) itemObject).creativeModeTab.get(), itemObject);
+            RegisterCreativeModeTab(((ItemWithCreativeTabBase.ItemPlaceOnWater) itemObject).creativeModeTab.get(), itemObject);
         }
     }
 
@@ -41,7 +52,7 @@ public class MSDMainFabric implements ModInitializer {
         registerBlock(path, block);
         final BlockItem blockItem = new BlockItem(block.get(), RegistryUtilities.createItemProperties(creativeModeTab::get));
         Registry.register(RegistryUtilities.registryGetItem(), new ResourceLocation(MSDMain.MOD_ID, path), blockItem);
-        FabricRegistryUtilities.registerCreativeModeTab(creativeModeTab.get(), blockItem);
+        RegisterCreativeModeTab(creativeModeTab.get(), blockItem);
     }
 
     private static void registerBlockEntityType(String path, RegistryObject<? extends BlockEntityType<? extends BlockEntityMapper>> blockEntityType) {

@@ -8,5 +8,5 @@ architectury {
 }
 
 loom {
-    accessWidenerPath = file("src/main/resources/mcmtr.accesswidener")
+    accessWidenerPath = file("src/main/resources/msd.accesswidener")
 }
